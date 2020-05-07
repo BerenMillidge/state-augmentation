@@ -55,6 +55,9 @@ def main(config):
         None,
         config.batch_size,
         buffer_size=config.buffer_size,
+        n_augments=config.n_augments,
+        augment_std=config.augment_std,
+        reward_std=config.reward_std,
         device=DEVICE,
     )
 
@@ -182,6 +185,11 @@ if __name__ == "__main__":
     parser.add_argument("--sac_num_train_steps", default=1000000, type=int)
     parser.add_argument("--sac_batch_size", default=32, type=int)
     parser.add_argument("--sac_hidden_dim", default=1024, type=int)
+
+    #augmented buffer
+    parser.add_argument("--n_augments",default=0,type=int)
+    parser.add_argument("--augment_std",default=0.01,type=float)
+    parser.add_argument("--reward_std",default=0.0,type=float)
 
     config = parser.parse_args()
     main(config)
