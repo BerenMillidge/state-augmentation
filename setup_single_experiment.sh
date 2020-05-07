@@ -50,25 +50,25 @@ mkdir -p ${log_path}
 echo "Initializing Conda Environment"
 CONDA_NAME=env
 conda activate ${CONDA_NAME}
-#mkdir -p ${log_path}
+mkdir -p ${log_path}
 
 
 echo "Moving input data to the compute node's scratch space: $SCRATCH_DISK"
 
 # input data directory path on the DFS - change line below if loc different
-repo_home=/home/${USER}/PredictiveCodingBackpropStaging
-mnist_path=${repo_home}/mnist_data
-cifar_path=${repo_home}/cifar_data
-svhn_path=${repo_home}/svhn_data
+#repo_home=/home/${USER}/PredictiveCodingBackpropStaging
+#mnist_path=${repo_home}/mnist_data
+#cifar_path=${repo_home}/cifar_data
+#svhn_path=${repo_home}/svhn_data
 #src_path=${repo_home}/experiments/examples/mnist/data/input
 
 # input data directory path on the scratch disk of the node
-mnist_dest_path=${SCRATCH_DISK}/${USER}/mnist_data
-mkdir -p ${mnist_dest_path}  # make it if required
-cifar_dest_path=${SCRATCH_DISK}/${USER}/cifar_data
-mkdir -p ${cifar_dest_path}  # make it if required
-svhn_dest_path=${SCRATCH_DISK}/${USER}/svhn_data
-mkdir -p ${svhn_dest_path}  # make it if required
+#mnist_dest_path=${SCRATCH_DISK}/${USER}/mnist_data
+#mkdir -p ${mnist_dest_path}  # make it if required
+#cifar_dest_path=${SCRATCH_DISK}/${USER}/cifar_data
+#mkdir -p ${cifar_dest_path}  # make it if required
+#svhn_dest_path=${SCRATCH_DISK}/${USER}/svhn_data
+#mkdir -p ${svhn_dest_path}  # make it if required
 
 # Important notes about rsync:
 # * the --compress option is going to compress the data before transfer to send
@@ -80,12 +80,12 @@ mkdir -p ${svhn_dest_path}  # make it if required
 # * for more about the (endless) rsync options, see the docs:
 #       https://download.samba.org/pub/rsync/rsync.html
 
-rsync --archive --update --compress --progress ${mnist_path}/ ${mnist_dest_path}
-echo "Rsynced mnist"
-rsync --archive --update --compress --progress ${cifar_path}/ ${cifar_dest_path}
-echo "Rsynced cifar"
-rsync --archive --update --compress --progress ${svhn_path}/ ${svhn_dest_path}
-echo "Rsynced svhn"
+#rsync --archive --update --compress --progress ${mnist_path}/ ${mnist_dest_path}
+#echo "Rsynced mnist"
+#rsync --archive --update --compress --progress ${cifar_path}/ ${cifar_dest_path}
+#echo "Rsynced cifar"
+#rsync --archive --update --compress --progress ${svhn_path}/ ${svhn_dest_path}
+#echo "Rsynced svhn"
 
 #echo "Running experiment command"
 #pip install git+https://github.com/Bmillidgework/exploration-baselines
