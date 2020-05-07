@@ -36,6 +36,7 @@ class Buffer(object):
         self.augment_std = augment_std
         self.reward_std=reward_std
         self.sample_jitter = sample_jitter
+        print("INITIALIZING BUFFER: SAMPLE JITTER: ", self.sample_jitter)
 
         self.normalizer = normalizer
         self._total_steps = 0
@@ -129,6 +130,7 @@ class Buffer(object):
 
     def sample_proprio(self):
         if self.sample_jitter==True:
+            #print("sampling jittered samples!")
             return self.sample_gauss_jittered_proprio(self.n_augments,self.augment_std,self.reward_std)
         else:
             self.base_sample_proprio()
@@ -141,6 +143,9 @@ class Buffer(object):
         next_states = next_states.repeat(n_augments,1)
         not_dones = not_dones.repeat(n_augments,1)
         state_noise = torch.empty(states.shape).normal_(mean=0,std=augment_std)
+        #print("STATE NOISE: ", state_noise.shape)
+        print("STATES: ", states.shape)
+        #print(states)
         state_noise[0:self.batch_size,:] = torch.zeros([self.batch_size,self.state_size])
         states += state_noise #be aware this jitters the original as well
         
