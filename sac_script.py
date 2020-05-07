@@ -58,6 +58,7 @@ def main(config):
         n_augments=config.n_augments,
         augment_std=config.augment_std,
         reward_std=config.reward_std,
+        sample_jitter=config.sample_jitter,
         device=DEVICE,
     )
 
@@ -110,6 +111,8 @@ def main(config):
 
     return rewards
 
+def boolcheck(x):
+        return str(x).lower() in ["true", "1", "yes"]
 
 if __name__ == "__main__":
 
@@ -191,13 +194,14 @@ if __name__ == "__main__":
     parser.add_argument("--n_augments",default=0,type=int)
     parser.add_argument("--augment_std",default=0.01,type=float)
     parser.add_argument("--reward_std",default=0.0,type=float)
+    parser.add_argument("--sample_jitter",default="False",type=boolcheck)
 
     config = parser.parse_args()
     #create directories if don't already exist!
-    if args.savedir != "":
-        subprocess.call(["mkdir","-p",str(args.savedir)])
-    if args.logdir != "":
-        subprocess.call(["mkdir","-p",str(args.logdir)])
+    if config.savedir != "":
+        subprocess.call(["mkdir","-p",str(config.savedir)])
+    if config.logdir != "":
+        subprocess.call(["mkdir","-p",str(config.logdir)])
     print("folders created")
 
     main(config)
