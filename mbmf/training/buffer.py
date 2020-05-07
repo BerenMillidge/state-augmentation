@@ -132,7 +132,7 @@ class Buffer(object):
         if self.sample_jitter==True:
             #print("sampling jittered samples!")
             return self.sample_gauss_jittered_proprio(self.n_augments,self.augment_std,self.reward_std)
-        else:
+        else:s
             self.base_sample_proprio()
 
     def sample_gauss_jittered_proprio(self,n_augments, augment_std,reward_std=0):
@@ -142,18 +142,18 @@ class Buffer(object):
         rewards = rewards.repeat(n_augments,1)
         next_states = next_states.repeat(n_augments,1)
         not_dones = not_dones.repeat(n_augments,1)
-        state_noise = torch.empty(states.shape).normal_(mean=0,std=augment_std)
+        state_noise = torch.empty(states.shape).normal_(mean=0,std=augment_std).to(self.device)
         #print("STATE NOISE: ", state_noise.shape)
         print("STATES: ", states.shape)
         #print(states)
         state_noise[0:self.batch_size,:] = torch.zeros([self.batch_size,self.state_size])
         states += state_noise #be aware this jitters the original as well
         
-        next_state_noise = torch.empty(next_states.shape).normal_(mean=0,std=augment_std)
+        next_state_noise = torch.empty(next_states.shape).normal_(mean=0,std=augment_std)to(self.device)
         next_state_noise[0:self.batch_size,:] = torch.zeros([self.batch_size,self.state_size])
         next_states += next_state_noise #be aware this jitters the original as well
         if reward_std > 0.0:
-            reward_noise = torch.empty(rewards.shape).normal_(mean=0,std=reward_std)
+            reward_noise = torch.empty(rewards.shape).normal_(mean=0,std=reward_std).to(self.device)
             reward_noise[0:self.batch_size,:] = torch.zeros([self.batch_size,1])
             rewards += reward_noise #be aware this jitters the original as well
 
