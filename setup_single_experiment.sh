@@ -1,4 +1,4 @@
- #!/bin/bash
+#!/bin/bash
 
 
 # FMI about options, see https://slurm.schedmd.com/sbatch.html
@@ -19,7 +19,7 @@
 # #SBATCH --nodes=1
 
 # Generic resources to use - typically you'll want gpu:n to get n gpus
-#SBATCH --gres=gpu:2
+#SBATCH --gres=gpu:1
 
 # Megabytes of RAM required. Check `cluster-status` for node configurations
 #SBATCH --mem=16000
@@ -44,48 +44,13 @@ set -e
 echo "Setting up log files"
 USER=s1686853
 SCRATCH_DISK=/disk/scratch
-log_path=${SCRATCH_DISK}/${USER}/state_augmentation
+log_path=${SCRATCH_DISK}/${USER}/initial_bipedal_experiments
 mkdir -p ${log_path}
 
 echo "Initializing Conda Environment"
-CONDA_NAME=env
+CONDA_NAME=curl
 conda activate ${CONDA_NAME}
-mkdir -p ${log_path}
-
-
-echo "Moving input data to the compute node's scratch space: $SCRATCH_DISK"
-
-# input data directory path on the DFS - change line below if loc different
-#repo_home=/home/${USER}/PredictiveCodingBackpropStaging
-#mnist_path=${repo_home}/mnist_data
-#cifar_path=${repo_home}/cifar_data
-#svhn_path=${repo_home}/svhn_data
-#src_path=${repo_home}/experiments/examples/mnist/data/input
-
-# input data directory path on the scratch disk of the node
-#mnist_dest_path=${SCRATCH_DISK}/${USER}/mnist_data
-#mkdir -p ${mnist_dest_path}  # make it if required
-#cifar_dest_path=${SCRATCH_DISK}/${USER}/cifar_data
-#mkdir -p ${cifar_dest_path}  # make it if required
-#svhn_dest_path=${SCRATCH_DISK}/${USER}/svhn_data
-#mkdir -p ${svhn_dest_path}  # make it if required
-
-# Important notes about rsync:
-# * the --compress option is going to compress the data before transfer to send
-#   as a stream. THIS IS IMPORTANT - transferring many files is very very slow
-# * the final slash at the end of ${src_path}/ is important if you want to send
-#   its contents, rather than the directory itself. For example, without a
-#   final slash here, we would create an extra directory at the destination:
-#       ${SCRATCH_HOME}/project_name/data/input/input
-# * for more about the (endless) rsync options, see the docs:
-#       https://download.samba.org/pub/rsync/rsync.html
-
-#rsync --archive --update --compress --progress ${mnist_path}/ ${mnist_dest_path}
-#echo "Rsynced mnist"
-#rsync --archive --update --compress --progress ${cifar_path}/ ${cifar_dest_path}
-#echo "Rsynced cifar"
-#rsync --archive --update --compress --progress ${svhn_path}/ ${svhn_dest_path}
-#echo "Rsynced svhn"
+#mkdir -p ${log_path}
 
 #echo "Running experiment command"
 #pip install git+https://github.com/Bmillidgework/exploration-baselines
