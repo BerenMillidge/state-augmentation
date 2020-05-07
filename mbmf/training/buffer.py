@@ -15,6 +15,7 @@ class Buffer(object):
         n_augments = 3,
         augment_std=0.1,
         reward_std = 0.05,
+        sample_jitter=False,
         device="cpu",
     ):
         self.state_size = state_size
@@ -34,6 +35,7 @@ class Buffer(object):
         self.n_augments = n_augments
         self.augment_std = augment_std
         self.reward_std=reward_std
+        self.sample_jitter = sample_jitter
 
         self.normalizer = normalizer
         self._total_steps = 0
@@ -57,7 +59,7 @@ class Buffer(object):
         #add the un-jittered batch
         self.base_add(state, action,reward,next_state,done)
         #print("in add augments: ", self.n_augments)
-        if self.n_augments > 0:
+        if self.n_augments > 0 and self.sample_jitter == False:
             #loop over augments
             for n in range(self.n_augments):
                 aug_state = state + np.random.normal(0.0,self.augment_std,size=state.shape)
@@ -101,7 +103,7 @@ class Buffer(object):
             yield states, actions, rewards, state_deltas
 
     
-    def sample_proprio(self):
+    def base_sample_proprio(self):
         #all are [BATCH_SIZE x FEATURE_DIM]
         idxs = np.random.randint(0, self.current_size, size=self.batch_size)
         states = torch.as_tensor(self.states[idxs], device=self.device).float()
@@ -125,8 +127,14 @@ class Buffer(object):
     #here first to get reasonably good at it and see where it breaks stuff
     #which it likely doesn't right? yeah it will.
 
+    def sample_proprio(self):
+        if self.sample_jitter==True:
+            return self.sample_gauss_jittered_proprio(self.n_augments,self.augment_std,self.reward_std)
+        else:
+            self.base_sample_proprio()
+
     def sample_gauss_jittered_proprio(self,n_augments, augment_std,reward_std=0):
-        states, actions, rewards, next_states,not_dones = self.sample_proprio()
+        states, actions, rewards, next_states,not_dones = self.base_sample_proprio()
         states = states.repeat(n_augments,1)
         actions = actions.repeat(n_augments,1)
         rewards = rewards.repeat(n_augments,1)
