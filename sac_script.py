@@ -3,6 +3,9 @@ import sys
 import time
 import pathlib
 import argparse
+from copy import deepcopy
+import subprocess
+from datetime import datetime
 
 import numpy as np
 import torch
@@ -108,6 +111,16 @@ def main(config):
         )
         print(f"Test reward: {stats['rewards']} steps: {stats['steps']}")
         rewards.append(stats["rewards"][0])
+        #save properly
+        if episode % 100 == 0:
+            subprocess.call(['echo', "rewards: " + str(stats["rewards"][0])])
+            now = datetime.now()
+            current_time = str(now.strftime("%H:%M:%S"))
+            subprocess.call(['echo',"saving rewards at time: " +str(current_time)])
+            np.save(config.logdir + "/rewards.npy", np.array(deepcopy(rewards)))
+            subprocess.call(['rsync','--archive','--update','--compress','--progress',str(config.logdir) +"/",str(config.savedir)])
+            print("Rsynced files from: " + str(config.logdir) + "/ " + " to" + str(config.savedir))
+
 
     return rewards
 
