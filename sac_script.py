@@ -123,7 +123,8 @@ if __name__ == "__main__":
     parser.add_argument("--train_model", type=int, default=0)
 
     # Environment
-    parser.add_argument("--logdir", type=str, default="log")
+    parser.add_argument("--logdir", type=str, default="")
+    parser.add_argument("--savedir",type=str, default="")
     parser.add_argument("--env_name", type=str, default="HalfCheetahRun")
     parser.add_argument("--max_episode_len", type=int, default=100)
     parser.add_argument("--action_repeat", type=int, default=2)
@@ -192,4 +193,11 @@ if __name__ == "__main__":
     parser.add_argument("--reward_std",default=0.0,type=float)
 
     config = parser.parse_args()
+    #create directories if don't already exist!
+    if args.savedir != "":
+        subprocess.call(["mkdir","-p",str(args.savedir)])
+    if args.logdir != "":
+        subprocess.call(["mkdir","-p",str(args.logdir)])
+    print("folders created")
+
     main(config)
