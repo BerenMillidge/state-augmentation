@@ -30,7 +30,7 @@ for s in augment_stds:
 for r in reward_augment_stds:
     lpath = log_path + "/"+str(exp_name) + "/reward_augment_stds" + str(r)
     spath = save_path + "/" + str(exp_name) + "/reward_augment_stds" + str(r)
-    final_call = base_call + " --logdir " + str(lpath) + " --savedir " + str(spath) + " "  + " --augment_std " + str(0.05) + "--n_augments " + str(10) +" --reward_std " + str(r)
+    final_call = base_call + " --logdir " + str(lpath) + " --savedir " + str(spath) + " "  + " --augment_std " + str(0.05) + " --n_augments " + str(10) +" --reward_std " + str(r)
     print(final_call)
     print(final_call,file=output_file)
 
@@ -52,6 +52,6 @@ for s in augment_stds:
 for r in reward_augment_stds:
     lpath = log_path + "/"+str(exp_name) + "/jitter_reward_augment_stds" + str(r)
     spath = save_path + "/" + str(exp_name) + "/jitter_reward_augment_stds" + str(r)
-    final_call = base_call + " --logdir " + str(lpath) + " --savedir " + str(spath) + " "  + " --augment_std " + str(0.05) + "--n_augments " + str(10) +" --reward_std " + str(r) + " --sample_jitter True"
+    final_call = base_call + " --logdir " + str(lpath) + " --savedir " + str(spath) + " "  + " --augment_std " + str(0.05) + " --n_augments " + str(10) +" --reward_std " + str(r) + " --sample_jitter True"
     print(final_call)
     print(final_call,file=output_file)
