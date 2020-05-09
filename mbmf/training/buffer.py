@@ -133,7 +133,7 @@ class Buffer(object):
             #print("sampling jittered samples!")
             return self.sample_gauss_jittered_proprio(self.n_augments,self.augment_std,self.reward_std)
         else:
-            self.base_sample_proprio()
+            return self.base_sample_proprio()
 
     def sample_gauss_jittered_proprio(self,n_augments, augment_std,reward_std=0):
         states, actions, rewards, next_states,not_dones = self.base_sample_proprio()
