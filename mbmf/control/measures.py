@@ -10,7 +10,10 @@ class RewardMeasure(object):
         self.scale = scale
 
     def __call__(self, states, actions=None):
-        return self._env.batch_reward_function(states, actions) * self.scale
+        try:
+            return self._env.batch_reward_function(states, actions) * self.scale
+        except:
+            return torch.ones_like(actions)
 
 
 class InformationGainMeasure(object):

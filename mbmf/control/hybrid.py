@@ -128,6 +128,10 @@ class HybridAgent(nn.Module):
                 action_std = torch.ones_like(action_mean) * self.cem_std
 
             state = torch.tensor(state).float().squeeze().to(self.device)
+            print("going into contorl")
+            print("action_mean: ", action_mean.shape)
+            print("action_std: ", action_std.shape)
+            bib
             action = self.planner(state, action_mean=action_mean, action_std=action_std, is_torch=True, L=self.L)
 
         # NOTE should seperate this out 
